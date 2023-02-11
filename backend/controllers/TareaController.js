@@ -1,26 +1,49 @@
 import Tarea from '../models/Tarea.js'; //importing Model Tarea
 
 //get all tasks
-const obtenerTareas = (req, res) => {
-    res.json({msg: 'obteniendo tareas'});
+const obtenerTareas = async (req, res) => {
+    const { responsable } = req.body; //get user whom requesting
+
+    //validation responsable not found
+    if (!responsable) {
+        const error = new Error("responsanble missing");
+        res.status(400).json({ msg: error.message }); ç
+        return;
+    }
+
+    const tareas = await Tarea.findAll({
+        where: {
+            responsable: responsable //search responsable
+        }
+    }); //search in db
+
+
+    //validation tarea not found
+    if (tareas.length == 0) {
+        const error = new Error("you have no tasks, try adding one");
+        res.status(400).json({ msg: error.message });
+        return;
+    }
+
+    res.json(tareas);
 }
 
 //create task
 const agregarTarea = async (req, res) => {
     const tarea = new Tarea(req.body); //reading user input
-    const {titulo , descripcion, fecha_de_entrega, responsable} = tarea; //destructing to validate
+    const { titulo, descripcion, fecha_de_entrega, responsable } = tarea; //destructing to validate
 
     //validation
-    if(!titulo || !descripcion || !fecha_de_entrega) {
+    if (!titulo || !descripcion || !fecha_de_entrega) {
         const error = new Error("All fields are requiered");
-        res.status(400).json({msg: error.message});
+        res.status(400).json({ msg: error.message });
         return;
     }
 
     //validation
-    if(!responsable) {
+    if (!responsable) {
         const error = new Error("responsanble missing");
-        res.status(400).json({msg: error.message});
+        res.status(400).json({ msg: error.message });
         return;
     }
 
@@ -34,61 +57,62 @@ const agregarTarea = async (req, res) => {
 
 //getting a task
 const obtenerTarea = async (req, res) => {
-    const {id} = req.params; //read item id from url
-    const {responsable} = req.body; //get value from localstorage
+    const { id } = req.params; //read item id from url
+    const { responsable } = req.body; //get user whom requesting
+
+    //validation responsable not found
+    if (!responsable) {
+        const error = new Error("responsanble missing");
+        res.status(400).json({ msg: error.message });
+        return;
+    }
 
     const tarea = await Tarea.findOne({
         where: {
-              id: id, //where the id is the same
-              responsable: responsable //so is the name
-          }
-        }); //search in db
+            id: id, //where the id is the same
+            responsable: responsable //so is the name
+        }
+    }); //search in db
+
 
     //validation tarea not found
-    if(!tarea) {
+    if (!tarea) {
         const error = new Error("item not found");
-        res.status(400).json({msg: error.message});
+        res.status(400).json({ msg: error.message });
     }
 
-    //validation responsable not found
-    if(!responsable) {
-        const error = new Error("responsanble missing");
-        res.status(400).json({msg: error.message});
-        return;
-    }
-
-    if(tarea.responsable !== responsable) {
+    if (tarea.responsable !== responsable) {
         const error = new Error("this item is not yours");
-        res.status(400).json({msg: error.message});
+        res.status(400).json({ msg: error.message });
         return;
     }
 
-    res.json({tarea});
+    res.json({ tarea });
 }
 
 //editing a task
 const editarTarea = async (req, res) => {
-    const {id} = req.params; //read item id from url
-    const {titulo, descripcion, fecha_de_entrega, completado, comentarios, responsable} = req.body; //get value from user input
-    
+    const { id } = req.params; //read item id from url
+    const { titulo, descripcion, fecha_de_entrega, completado, comentarios, responsable } = req.body; //get value from user input
+
+    //validation responsable not found
+    if (!responsable) {
+        const error = new Error("responsanble missing");
+        res.status(400).json({ msg: error.message });
+        return;
+    }
+
     const tarea = await Tarea.findOne({
         where: {
-              id: id, //where the id is the same
-              responsable: responsable //so is the name
-          }
+            id: id, //where the id is the same
+            responsable: responsable //so is the name
+        }
     }); //search in db
 
     //validation tarea not found
-    if(!tarea) {
+    if (!tarea) {
         const error = new Error("item not found");
-        res.status(400).json({msg: error.message});
-    }
-
-    //validation responsable not found
-    if(!responsable) {
-        const error = new Error("responsanble missing");
-        res.status(400).json({msg: error.message});
-        return;
+        res.status(400).json({ msg: error.message });
     }
 
     //check if any changes were made, if so then update the values 
@@ -103,34 +127,41 @@ const editarTarea = async (req, res) => {
         res.json(actualizado);
     } catch (e) {
         const error = new Error("item could not be updated");
-        res.status(400).json({msg: error.message});
+        res.status(400).json({ msg: error.message });
     }
 }
 
 //deleting a task
 const eliminarTarea = async (req, res) => {
-    const {id} = req.params; //read item id from url
-    const {responsable} = req.body; //get user whom requesting
-    
+    const { id } = req.params; //read item id from url
+    const { responsable } = req.body; //get user whom requesting
+
+    //validation responsable not found
+    if (!responsable) {
+        const error = new Error("responsanble missing");
+        res.status(400).json({ msg: error.message });
+        return;
+    }
+
     const tarea = await Tarea.findOne({
         where: {
-              id: id, //where the id is the same
-              responsable: responsable //so is the name
-          }
+            id: id, //where the id is the same
+            responsable: responsable //so is the name
+        }
     }); //search in db if exists
 
     //validation tarea not found
-    if(!tarea) {
+    if (!tarea) {
         const error = new Error("item not found");
-        res.status(400).json({msg: error.message});
+        res.status(400).json({ msg: error.message });
     }
 
     try {
-        await Tarea.destroy({where: {id: id, responsable: responsable}});
-        res.json({msg: 'task deleted successfully'});
+        await Tarea.destroy({ where: { id: id, responsable: responsable } });
+        res.json({ msg: 'task deleted successfully' });
     } catch (e) {
         const error = new Error("item could not be deleted");
-        res.status(400).json({msg: error.message});
+        res.status(400).json({ msg: error.message });
     }
 }
 
@@ -138,6 +169,6 @@ export {
     obtenerTareas,
     agregarTarea,
     obtenerTarea,
-    editarTarea, 
+    editarTarea,
     eliminarTarea
 }
