@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import db from '../config/db.js';
 
-export const Tarea = db.define('Tarea', {
+export const Tarea = db.define('tarea', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
