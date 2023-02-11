@@ -108,9 +108,30 @@ const editarTarea = async (req, res) => {
 }
 
 //deleting a task
-const eliminarTarea = (req, res) => {
-    const {id} = req.params;
-    res.json({msg: `borrando tarea: ${id}`});
+const eliminarTarea = async (req, res) => {
+    const {id} = req.params; //read item id from url
+    const {responsable} = req.body; //get user whom requesting
+    
+    const tarea = await Tarea.findOne({
+        where: {
+              id: id, //where the id is the same
+              responsable: responsable //so is the name
+          }
+    }); //search in db if exists
+
+    //validation tarea not found
+    if(!tarea) {
+        const error = new Error("item not found");
+        res.status(400).json({msg: error.message});
+    }
+
+    try {
+        await Tarea.destroy({where: {id: id, responsable: responsable}});
+        res.json({msg: 'task deleted successfully'});
+    } catch (e) {
+        const error = new Error("item could not be deleted");
+        res.status(400).json({msg: error.message});
+    }
 }
 
 export {
