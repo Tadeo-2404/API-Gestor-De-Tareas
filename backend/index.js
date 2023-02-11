@@ -3,7 +3,8 @@ import express, { json } from "express";
 import dotenv from 'dotenv';
 
 //files
-import db from "./config/db.js";
+import db from "./config/db.js"; //import db
+import tareaRoutes from './routes/tareaRoutes.js'; //import tarea routes
 
 //variables
 const app = express(); //instancing express
@@ -19,10 +20,7 @@ try {
     console.error('Unable to connect to the database:', error);
   }
 
-//entry point
-app.get('/', (req, res) => {
-    res.json({msg: 'hello wolrd'});
-})
+app.use('/api/tareas', tareaRoutes); //using tarea routes
 
 //listening app
 app.listen(port, () => {
