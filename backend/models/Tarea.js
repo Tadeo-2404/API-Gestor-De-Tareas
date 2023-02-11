@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
 import db from '../config/db.js';
 
-export const Tarea = db.define('tarea', {
+const Tarea = db.define('tarea', {
     titulo: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -31,3 +31,5 @@ export const Tarea = db.define('tarea', {
     updatedAt: false,
     createdAt: false,
 });
+
+export default Tarea;
