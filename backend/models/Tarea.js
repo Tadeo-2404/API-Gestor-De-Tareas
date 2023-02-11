@@ -1,35 +1,30 @@
-import { DataTypes } from 'sequelize';
+import { Sequelize } from 'sequelize';
 import db from '../config/db.js';
 
 export const Tarea = db.define('tarea', {
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-    },
     titulo: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull: false,
     },
     descripcion: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull: false,
     },
     completado: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
     },
     fecha_de_entrega: {
-        type: DataTypes.DATE,
+        type: Sequelize.DATEONLY,
         allowNull: false,
     },
     comentarios: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
+        defaultValue: null
     },
     responsable: {
-        type: DataTypes.INTEGER,
-        references: 'usuario',
-        referencesKey: 'id',
+        type: Sequelize.STRING,
+        allowNull: false
     }
 }, {
     timestamps: true,

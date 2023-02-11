@@ -1,9 +1,35 @@
+import { Tarea } from '../models/Tarea.js'; //importing Model Tarea
+
+//get all tasks
 const obtenerTareas = (req, res) => {
     res.json({msg: 'obteniendo tareas'});
 }
 
-const agregarTarea = (req, res) => {
-    res.json({msg: 'agregando tarea'});
+//create task
+const agregarTarea = async (req, res) => {
+    const tarea = new Tarea(req.body); //reading user input
+    const responsable = localStorage.getItem("responsable"); //get value from localstorage
+    tarea.responsable = responsable; //assing value to variable
+    const {titulo , descripcion, fecha_de_entrega} = tarea; //destructing to validate
+
+    //validation
+    if(!titulo || !descripcion || !fecha_de_entrega) {
+        const error = new Error("All fields are requiered");
+        res.status(400).json({msg: error.message});
+    }
+
+    //validation
+    if(!responsable) {
+        const error = new Error("responsanble missing");
+        res.status(400).json({msg: error.message});
+    }
+
+    try {
+        const creado = await tarea.save(); //save in db
+        res.json(creado);
+    } catch (e) {
+        console.log(e);
+    }
 }
 
 const obtenerTarea = (req, res) => {
