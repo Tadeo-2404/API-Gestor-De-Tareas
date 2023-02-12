@@ -4,7 +4,7 @@ const TemplateLayout = () => {
   return (
     <div>
         <NavBar />
-        <div className='bg-gray-200 p-10 h-screen'>
+        <div className='p-10 h-screen flex flex-col justify-center items-center'>
          <Outlet />
         </div>
     </div>
