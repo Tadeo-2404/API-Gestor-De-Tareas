@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
+import { Context } from "../context/ContextProvider";
 
 const IniciarSesion = () => {
   const [usuario, setUsuario] = useState("");
   const [error, setError] = useState({});
   const navigate = useNavigate();
+  const {setAuth, setLoggedIn} = useContext(Context);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -27,6 +29,8 @@ const IniciarSesion = () => {
 
     try {
       await localStorage.setItem("responsable", usuario);
+      setLoggedIn(true);
+      setAuth({responsable: usuario});
       navigate('/api/tareas');
     } catch (error) {
       setError(error);
