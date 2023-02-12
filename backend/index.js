@@ -15,6 +15,7 @@ const port = process.env.PORT || 3000; //indicating port
 //db connection
 try {
     await db.authenticate();
+    await db.sync();
     console.log('Connection to db has been established successfully.');
   } catch (error) {
     console.error('Unable to connect to the database:', error);
