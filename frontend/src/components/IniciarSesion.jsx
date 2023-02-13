@@ -46,10 +46,10 @@ const IniciarSesion = () => {
           onSubmit={handleSubmit}
         >
           <legend className="flex flex-col gap-2">
-            <h1 className="text-4xl font-bold text-indigo-700 uppercase">
+            <h1 className="text-4xl font-bold text-indigo-700 uppercase sm:text-2xl">
               iniciar sesion
             </h1>
-            <p className="text-xl capitalize">
+            <p className="text-xl capitalize sm:text-xl">
               coloca tu usuario y organiza tus tareas
             </p>
           </legend>
