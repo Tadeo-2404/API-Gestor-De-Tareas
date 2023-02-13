@@ -34,8 +34,14 @@ const ContextTareas = ({ children }) => {
     allowed();
   }, [responsable]);
 
+  const signOut = () => {
+    navigate('/');
+    setLoggedIn(false);
+    localStorage.removeItem('responsable');
+  }
+
   return (
-    <Context.Provider value={{ auth, setAuth, loggedIn, setLoggedIn, tareas}}>
+    <Context.Provider value={{ auth, setAuth, loggedIn, setLoggedIn, tareas, signOut}}>
       {children}
     </Context.Provider>
   );
