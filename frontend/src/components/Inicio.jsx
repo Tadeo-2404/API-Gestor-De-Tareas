@@ -1,12 +1,18 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
+import { useNavigate } from 'react-router-dom';
 import { Context } from "../context/ContextProvider";
 import { RiDeleteBin6Line, RiEditLine } from "react-icons/ri";
 
 const Inicio = () => {
   const { tareas, auth, deleteItem } = useContext(Context);
+  const navigate = useNavigate();
 
   const handleClick = (e, data) => {
     deleteItem(data);
+  }
+
+  const handleClickUpdate = (e, data) => {
+    navigate(`/api/tareas/${data.id}`);
   }
 
   return (
@@ -52,6 +58,8 @@ const Inicio = () => {
                   <button
                     type="submit"
                     className="bg-blue-500 flex items-center justify-around p-2 uppercase"
+                    value={tarea.id}
+                    onClick={((e) => handleClickUpdate(e, tarea))}
                   >
                     <p>editar</p>
                     <RiEditLine className="text-2xl" />
