@@ -1,6 +1,7 @@
 //libraries
 import express, { json } from "express";
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 //files
 import db from "./config/db.js"; //import db
@@ -9,6 +10,7 @@ import tareaRoutes from './routes/tareaRoutes.js'; //import tarea routes
 //variables
 const app = express(); //instancing express
 dotenv.config(); //using enviroment variables
+app.use(cors());
 app.use(json()); //using json 
 const port = process.env.PORT || 3000; //indicating port
 
