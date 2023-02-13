@@ -1,9 +1,7 @@
 import { useState, useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { Context } from "../context/ContextProvider";
-import axios from 'axios';
 
-const Editar = () => {
+const Crear = () => {
   const [titulo, setTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [completado, setCompletado] = useState(false);
@@ -14,9 +12,7 @@ const Editar = () => {
   const [errorDescripcion, setErrorDescripcion] = useState({});
   const [errorFecha, setErrorFecha] = useState({});
   const [errorComentarios, setErrorComentarios] = useState({});
-  const navigate = useNavigate();
-  const {id} = useParams();
-  const { updateItem } = useContext(Context);
+  const { auth, createItem } = useContext(Context);
   
 
   const handleCheck = () => setCompletado(!completado);
@@ -60,23 +56,23 @@ const Editar = () => {
         return;
     }
 
-    updateItem({id: id, titulo: titulo, descripcion: descripcion, fecha_de_entrega: fecha_de_entrega, completado: completado, comentarios: comentarios});
+    createItem({titulo: titulo, descripcion: descripcion, fecha_de_entrega: fecha_de_entrega, completado: completado, comentarios: comentarios, responsable: auth});
   };
   return (
     <>
       <div>
         <form
           action="/"
-          method="put"
+          method="post"
           className="bg-gray-100 p-8 text-black text-center flex flex-col justify-center items-center shadow-2xl gap-12"
           onSubmit={handleSubmit}
         >
           <legend className="flex flex-col gap-2">
             <h1 className="text-4xl font-bold text-indigo-700 uppercase">
-              editar tarea
+              crear tarea
             </h1>
             <p className="text-xl capitalize">
-              edita la informacion de tu tarea
+              crea una tarea colocando la informacion
             </p>
           </legend>
           <fieldset className="w-full flex flex-col gap-4">
@@ -263,7 +259,7 @@ const Editar = () => {
           </fieldset>
           <input
             type="submit"
-            value="editar"
+            value="crear"
             className="text-lg font-bold bg-indigo-700 uppercase text-white p-3 rounded-md w-full"
           />
         </form>
@@ -272,4 +268,4 @@ const Editar = () => {
   );
 };
 
-export default Editar;
+export default Crear;

@@ -39,6 +39,17 @@ const ContextTareas = ({ children }) => {
     localStorage.removeItem("responsable");
   };
 
+  const createItem = async (tarea) => {
+
+    try {
+      const url = `http://localhost:3000/api/tareas/`;
+      const petiicion = await axios.post(url, tarea);
+      console.log(petiicion);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const deleteItem = async (tarea) => {
     const validate = confirm(`Desear borrar la tarea: ${tarea.titulo}`);
 
@@ -87,6 +98,7 @@ const ContextTareas = ({ children }) => {
         setLoggedIn,
         tareas,
         signOut,
+        createItem,
         deleteItem,
         updateItem,
       }}

@@ -1,11 +1,17 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Context } from "../context/ContextProvider";
 import { RiDeleteBin6Line, RiEditLine } from "react-icons/ri";
+import Crear from "./Crear";
 
 const Inicio = () => {
   const { tareas, auth, deleteItem } = useContext(Context);
+  const [mostrar, setMostrar] = useState(false);
   const navigate = useNavigate();
+
+  const handleClickMostrar = () => {
+    setMostrar(!mostrar);
+  }
 
   const handleClick = (e, data) => {
     deleteItem(data);
@@ -19,12 +25,30 @@ const Inicio = () => {
     <>
       {tareas.length > 0 ? (
         <div className="flex flex-col justify-center items-center gap-4">
-          <h1 className="uppercase font-bold text-3xl">
-            hola de nuevo!! <span className="text-indigo-700">{auth}</span>
-          </h1>
-          <div className="grid grid-cols-3 p-2 gap-8 text-lg">
+          <div className="text-center">
+            <h1 className="uppercase font-bold text-3xl">
+              hola de nuevo!! <span className="text-indigo-700">{auth}</span>
+            </h1>
+            <p className="uppercase text-xl">
+              Puedes crear una tarea o puedes editar las que ya tienes
+            </p>
+          </div>
+
+          <div className="flex flex-col justify-center items-center">
+            <button className="text-lg font-bold bg-indigo-700 uppercase text-white p-3 rounded-md w-fit mb-10" onClick={handleClickMostrar}>
+              agregar tarea
+            </button>
+            {mostrar && (
+             <Crear />
+            )}
+            <div className="text-center flex flex-col justify-center items-center mt-20 gap-5">
+              <h1 className="uppercase font-bold text-3xl">tus tareas</h1>
+              <div className="grid grid-cols-3 grid-flow-col p-2 gap-8 text-lg">
             {tareas.map((tarea) => (
-              <div key={tarea.id} className="bg-gray-100 p-2 w-80 text-center grid grid-cols-1 grid-rows-2">
+              <div
+                key={tarea.id}
+                className="bg-gray-100 p-2 text-center grid grid-cols-1 grid-rows-2"
+              >
                 <div className="flex flex-col row-span-2">
                   <div className="flex flex-col justify-between items-center p-2">
                     <h1 className="uppercase font-bold">titulo</h1>
@@ -50,7 +74,7 @@ const Inicio = () => {
                     type="submit"
                     className="bg-red-500 flex items-center justify-around p-2 uppercase"
                     value={tarea.id}
-                    onClick={((e) => handleClick(e, tarea))}
+                    onClick={(e) => handleClick(e, tarea)}
                   >
                     <p>eliminar</p>
                     <RiDeleteBin6Line className="text-2xl" />
@@ -59,7 +83,7 @@ const Inicio = () => {
                     type="submit"
                     className="bg-blue-500 flex items-center justify-around p-2 uppercase"
                     value={tarea.id}
-                    onClick={((e) => handleClickUpdate(e, tarea))}
+                    onClick={(e) => handleClickUpdate(e, tarea)}
                   >
                     <p>editar</p>
                     <RiEditLine className="text-2xl" />
@@ -67,6 +91,8 @@ const Inicio = () => {
                 </div>
               </div>
             ))}
+              </div>
+            </div>
           </div>
         </div>
       ) : (
