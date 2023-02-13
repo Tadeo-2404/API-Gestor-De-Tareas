@@ -7,6 +7,7 @@ const ContextTareas = ({ children }) => {
   const [auth, setAuth] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
   const [tareas, setTareas] = useState([]);
+  const [tarea, setTarea] = useState({});
   const navigate = useNavigate();
   const responsable = localStorage.getItem("responsable");
 
@@ -23,7 +24,7 @@ const ContextTareas = ({ children }) => {
       }
 
       try {
-        const url = `http://localhost:3000/api/tareas?responsable=${responsable}`;
+        const url = `${import.meta.env.VITE_URL_BACKEND}/api/tareas?responsable=${responsable}`;
         const petiicion = await axios.get(url);
         setTareas(petiicion.data);
       } catch (error) {
@@ -34,17 +35,20 @@ const ContextTareas = ({ children }) => {
   }, [responsable]);
 
   const signOut = () => {
-    navigate("/");
+    setAuth({});
+    setTarea({});
+    setTareas({});
     setLoggedIn(false);
     localStorage.removeItem("responsable");
+    navigate("/");
   };
 
   const createItem = async (tarea) => {
 
     try {
-      const url = `http://localhost:3000/api/tareas/`;
+      const url = `${import.meta.env.VITE_URL_BACKEND}/api/tareas/`;
       const petiicion = await axios.post(url, tarea);
-      console.log(petiicion);
+      setTareas([...tareas, petiicion.data]);
     } catch (error) {
       console.log(error);
     }
@@ -58,15 +62,17 @@ const ContextTareas = ({ children }) => {
     }
 
     try {
-      const url = `http://localhost:3000/api/tareas/${tarea.id}`;
+      const url = `${import.meta.env.VITE_URL_BACKEND}/api/tareas/${tarea.id}`;
       await axios.delete(url, { data: { responsable: auth } });
+      setTareas((tareas) =>
+      tareas.filter((item) => item.id !== tarea.id)
+      );
     } catch (error) {
       console.log(error);
     }
   };
 
   const updateItem = async (tarea) => {
-    console.log(tarea);
     let flag = false;
     tareas.forEach((t) => {
       {
@@ -81,9 +87,13 @@ const ContextTareas = ({ children }) => {
     }
     
     try {
-      const url = `http://localhost:3000/api/tareas/${tarea.id}`;
-      const petiicion = await axios.put(url, {titulo: tarea.titulo, descripcion: tarea.descripcion, completado: tarea.completado, fecha_de_entrega: tarea.fecha_de_entrega, comentarios: tarea.comentarios ,responsable: auth});
-      console.log(petiicion);
+      const url = `${import.meta.env.VITE_URL_BACKEND}/api/tareas/${tarea.id}`;
+      const {data} = await axios.put(url, {titulo: tarea.titulo, descripcion: tarea.descripcion, completado: tarea.completado, fecha_de_entrega: tarea.fecha_de_entrega, comentarios: tarea.comentarios ,responsable: auth});
+      setTareas((tareas) =>
+       tareas.pop((item) => item.id === data.id)
+      );
+      setTareas([...tareas, data]);
+      navigate('/api/tareas');
     } catch (error) {
       console.log(error);
     }
@@ -97,6 +107,8 @@ const ContextTareas = ({ children }) => {
         loggedIn,
         setLoggedIn,
         tareas,
+        tarea,
+        setTarea,
         signOut,
         createItem,
         deleteItem,

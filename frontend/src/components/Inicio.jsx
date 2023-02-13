@@ -1,23 +1,31 @@
+//libraries
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Context } from "../context/ContextProvider";
 import { RiDeleteBin6Line, RiEditLine } from "react-icons/ri";
+
+//components
+import { Context } from "../context/ContextProvider";
 import Crear from "./Crear";
 
 const Inicio = () => {
-  const { tareas, auth, deleteItem } = useContext(Context);
+  //variables
+  const { tareas, auth, deleteItem, setTarea } = useContext(Context); //get context
   const [mostrar, setMostrar] = useState(false);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); //navigate
 
+  //function show form
   const handleClickMostrar = () => {
     setMostrar(!mostrar);
   };
 
+  //function delete item
   const handleClick = (e, data) => {
     deleteItem(data);
   };
 
+  //function update item
   const handleClickUpdate = (e, data) => {
+    setTarea(data);
     navigate(`/api/tareas/${data.id}`);
   };
 
@@ -40,11 +48,15 @@ const Inicio = () => {
           >
             agregar tarea
           </button>
+
+          {/* show form Crear */}
           {mostrar && <Crear />}
 
           {tareas.length > 0 ? (
             <div className="text-center flex flex-col justify-center items-center mt-20 gap-5">
               <h1 className="uppercase font-bold text-3xl">tus tareas</h1>
+
+              {/* iterate over array tareas contextProvider */}
               <div className="grid grid-cols-3 grid-flow-col p-2 gap-8 text-lg sm:flex sm:flex-col">
                 {tareas.map((tarea) => (
                   <div

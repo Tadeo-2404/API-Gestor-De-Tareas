@@ -1,16 +1,22 @@
+//libraries
 import { useState, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
+
+//components
 import { Context } from "../context/ContextProvider";
 
 const IniciarSesion = () => {
+  //variables
   const [usuario, setUsuario] = useState("");
   const [error, setError] = useState({});
   const navigate = useNavigate();
-  const {setAuth, setLoggedIn} = useContext(Context);
+  const {setAuth, setLoggedIn} = useContext(Context); //get context
 
+  //handle submit from form
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    //usuario not empty validation
     if (!usuario) {
       setError({ msg: "todos los campos son obligatorios" });
       setTimeout(() => {
@@ -19,6 +25,7 @@ const IniciarSesion = () => {
       return;
     }
 
+    //usuario length validation
     if (usuario.length < 4 || usuario.length > 20) {
       setError({ msg: "el usuario debe contener 4-20 caracteres" });
       setTimeout(() => {
@@ -28,10 +35,10 @@ const IniciarSesion = () => {
     }
 
     try {
-      await localStorage.setItem("responsable", usuario);
-      setLoggedIn(true);
-      setAuth(usuario);
-      navigate('/api/tareas');
+      await localStorage.setItem("responsable", usuario); //store usuario in localStorage
+      setLoggedIn(true); //loggeIn set true
+      setAuth(usuario); //pass usuario to context
+      navigate('/api/tareas'); //redirect user
     } catch (error) {
       setError(error);
     }
@@ -54,6 +61,7 @@ const IniciarSesion = () => {
             </p>
           </legend>
           <fieldset className="w-full">
+            {/* usuario field */}
             {Object.keys(error).length !== 0 ? (
               <div className="flex flex-col justify-between items-start gap-4 w-full">
                 <label htmlFor="usuario" className="capitalize text-xl">
