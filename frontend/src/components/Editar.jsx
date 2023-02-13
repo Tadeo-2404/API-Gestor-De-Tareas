@@ -1,29 +1,34 @@
+//files
 import { useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+
+//components
 import { Context } from "../context/ContextProvider";
-import axios from 'axios';
 
 const Editar = () => {
+  //variables
   const [titulo, setTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [completado, setCompletado] = useState(false);
   const [fecha_de_entrega, setFecha_de_entrega] = useState("");
   const [comentarios, setComentarios] = useState("");
 
+  //erros
   const [errorTitulo, setErrorTitulo] = useState({});
   const [errorDescripcion, setErrorDescripcion] = useState({});
   const [errorFecha, setErrorFecha] = useState({});
   const [errorComentarios, setErrorComentarios] = useState({});
-  const navigate = useNavigate();
-  const {id} = useParams();
-  const { updateItem } = useContext(Context);
-  
+  const {id} = useParams(); //read id from url
+  const { updateItem, tarea } = useContext(Context); //get context
 
+  //checkbox input
   const handleCheck = () => setCompletado(!completado);
 
+  //handle submit from form
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    //fields empty validation
     if (!titulo || !descripcion || !fecha_de_entrega) {
       setErrorTitulo({ msg: "este campo es obligatorio" });
       setErrorDescripcion({ msg: "este campo es obligatorio" });
@@ -36,6 +41,7 @@ const Editar = () => {
       return;
     }
 
+    //titulo validation
     if (titulo.length < 4 || titulo.length > 100) {
       setErrorTitulo({ msg: "el titulo debe contener 4-20 caracteres" });
       setTimeout(() => {
@@ -44,6 +50,7 @@ const Editar = () => {
       return;
     }
 
+    //descripcion validation
     if (descripcion.length < 4 || descripcion.length > 100) {
         setErrorDescripcion({ msg: "la descripcion debe contener 4-100 caracteres" });
         setTimeout(() => {
@@ -52,6 +59,7 @@ const Editar = () => {
         return;
     }
 
+    //comentarios validation
     if (comentarios.length < 4 || comentarios.length > 100) {
         setComentarios({ msg: "el comentario debe contener 4-100 caracteres" });
         setTimeout(() => {
@@ -60,6 +68,7 @@ const Editar = () => {
         return;
     }
 
+    //pass data to contextProvider
     updateItem({id: id, titulo: titulo, descripcion: descripcion, fecha_de_entrega: fecha_de_entrega, completado: completado, comentarios: comentarios});
   };
   return (
@@ -80,6 +89,7 @@ const Editar = () => {
             </p>
           </legend>
           <fieldset className="w-full flex flex-col gap-4">
+            {/* titulo field */}
             <div>
               {Object.keys(errorTitulo).length !== 0 ? (
                 <div className="flex flex-col justify-between items-start gap-4 w-full">
@@ -96,7 +106,7 @@ const Editar = () => {
                       name="titulo"
                       placeholder="titulo"
                       className="p-3 w-full text-red-500 border-red-500 border-2 text-center rounded-md text-xl"
-                      value={titulo}
+                      value={tarea.titulo}
                       onChange={(event) => setTitulo(event.target.value)}
                     />
                     <p className="text-red-500">{errorTitulo.msg}</p>
@@ -116,13 +126,14 @@ const Editar = () => {
                     name="titulo"
                     placeholder="titulo"
                     className="p-3 w-full text-black outline-none text-center rounded-md text-xl"
-                    value={titulo}
+                    value={tarea.titulo}
                     onChange={(event) => setTitulo(event.target.value)}
                   />
                 </div>
               )}
             </div>
 
+            {/* fecha field */}
             <div>
               {Object.keys(errorFecha).length !== 0 ? (
                 <div className="flex flex-col justify-between items-start gap-4 w-full">
@@ -136,7 +147,7 @@ const Editar = () => {
                       id="fecha"
                       name="fecha"
                       className="p-3 w-full text-black outline-none text-center rounded-md text-xl"
-                      value={fecha_de_entrega}
+                      value={tarea.fecha_de_entrega}
                       onChange={(event) =>
                         setFecha_de_entrega(event.target.value)
                       }
@@ -155,7 +166,7 @@ const Editar = () => {
                     id="fecha"
                     name="fecha"
                     className="p-3 w-full text-black outline-none text-center rounded-md text-xl"
-                    value={fecha_de_entrega}
+                    value={tarea.fecha_de_entrega}
                     onChange={(event) =>
                       setFecha_de_entrega(event.target.value)
                     }
@@ -164,6 +175,7 @@ const Editar = () => {
               )}
             </div>
 
+            {/* completado field */}
             <div className="flex justify-between items-center gap-4 w-full">
               <label htmlFor="completado" className="capitalize text-xl">
                 completado
@@ -172,11 +184,13 @@ const Editar = () => {
                 type="checkbox"
                 id="completado"
                 name="completado"
+                value={tarea.completado}
                 className="p-3 w-full text-black outline-none text-center rounded-md text-xl"
                 onClick={handleCheck}
               />
             </div>
 
+            {/* descripcion field */}
             <div>
               {Object.keys(errorDescripcion).length !== 0 ? (
                 <div className="flex flex-col justify-between items-start gap-4 w-full">
@@ -192,9 +206,9 @@ const Editar = () => {
                       minLength="4"
                       maxLength="100"
                       className="p-3 w-full text-black outline-none text-center rounded-md text-md"
-                      value={descripcion}
                       onChange={(event) => setDescripcion(event.target.value)}
                       required
+                      value={tarea.descripcion}
                     ></textarea>
                     <p className="text-red-500">{errorDescripcion.msg}</p>
                   </div>
@@ -212,7 +226,7 @@ const Editar = () => {
                     minLength="4"
                     maxLength="100"
                     className="p-3 w-full text-black outline-none text-center rounded-md text-md"
-                    value={descripcion}
+                    value={tarea.descripcion}
                     onChange={(event) => setDescripcion(event.target.value)}
                     required
                   ></textarea>
@@ -220,6 +234,7 @@ const Editar = () => {
               )}
             </div>
 
+            {/* comentarios field */}
             <div>
               {Object.keys(errorComentarios).length !== 0 ? (
                 <div className="flex flex-col justify-between items-start gap-4 w-full">
@@ -235,7 +250,7 @@ const Editar = () => {
                       minLength="4"
                       maxLength="100"
                       className="p-3 w-full text-black outline-none text-center rounded-md text-md"
-                      value={comentarios}
+                      value={tarea.comentarios}
                       onChange={(event) => setComentarios(event.target.value)}
                     ></textarea>
                     <p className="text-red-500">{errorComentarios.msg}</p>
@@ -254,7 +269,7 @@ const Editar = () => {
                     minLength="4"
                     maxLength="100"
                     className="p-3 w-full text-black outline-none text-center rounded-md text-md"
-                    value={comentarios}
+                    value={tarea.comentarios}
                     onChange={(event) => setComentarios(event.target.value)}
                   ></textarea>
                 </div>

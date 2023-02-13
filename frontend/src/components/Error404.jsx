@@ -10,7 +10,7 @@ const Error404 = () => {
   return (
     <div className="flex flex-col justify-center items-center gap-8">
       <p className="text-7xl"><span className="text-blue-600">4</span>0<span className="text-blue-600">4</span></p>
-      <h1 className="uppercase font-semibold">the page you requested could not be found</h1>
+      <h1 className="uppercase font-semibold">esta pagina no esta disponible</h1>
       <div className="flex justify-between text-center w-full">
         <button onClick={goBack} className="bg-blue-600 text-white p-3 font-semibold text-md rounded-xl hover:bg-gradient-to-r hover:from-blue-400 flex items-center justify-center gap-4 uppercase">
           <p>regresar</p>

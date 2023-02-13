@@ -1,25 +1,32 @@
+//libraries
 import { useState, useContext } from "react";
+
+//components
 import { Context } from "../context/ContextProvider";
 
 const Crear = () => {
+  //variables
   const [titulo, setTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [completado, setCompletado] = useState(false);
   const [fecha_de_entrega, setFecha_de_entrega] = useState("");
   const [comentarios, setComentarios] = useState("");
 
+  //errors
   const [errorTitulo, setErrorTitulo] = useState({});
   const [errorDescripcion, setErrorDescripcion] = useState({});
   const [errorFecha, setErrorFecha] = useState({});
   const [errorComentarios, setErrorComentarios] = useState({});
   const { auth, createItem } = useContext(Context);
-  
 
+  //checkbox variable
   const handleCheck = () => setCompletado(!completado);
 
+  //handle submit event from form
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault(); 
 
+    //fields empty validation
     if (!titulo || !descripcion || !fecha_de_entrega) {
       setErrorTitulo({ msg: "este campo es obligatorio" });
       setErrorDescripcion({ msg: "este campo es obligatorio" });
@@ -32,6 +39,7 @@ const Crear = () => {
       return;
     }
 
+    //titulo length
     if (titulo.length < 4 || titulo.length > 100) {
       setErrorTitulo({ msg: "el titulo debe contener 4-20 caracteres" });
       setTimeout(() => {
@@ -40,6 +48,7 @@ const Crear = () => {
       return;
     }
 
+    //descripcion length
     if (descripcion.length < 4 || descripcion.length > 100) {
         setErrorDescripcion({ msg: "la descripcion debe contener 4-100 caracteres" });
         setTimeout(() => {
@@ -48,6 +57,7 @@ const Crear = () => {
         return;
     }
 
+    //comentarios length
     if (comentarios.length < 4 || comentarios.length > 100) {
         setComentarios({ msg: "el comentario debe contener 4-100 caracteres" });
         setTimeout(() => {
@@ -56,6 +66,7 @@ const Crear = () => {
         return;
     }
 
+    //pass data to contextProvider 
     createItem({titulo: titulo, descripcion: descripcion, fecha_de_entrega: fecha_de_entrega, completado: completado, comentarios: comentarios, responsable: auth});
   };
   return (
@@ -76,6 +87,7 @@ const Crear = () => {
             </p>
           </legend>
           <fieldset className="w-full flex flex-col gap-4">
+            {/* titulo field */}
             <div>
               {Object.keys(errorTitulo).length !== 0 ? (
                 <div className="flex flex-col justify-between items-start gap-4 w-full">
@@ -119,6 +131,7 @@ const Crear = () => {
               )}
             </div>
 
+            {/* fecha field */}
             <div>
               {Object.keys(errorFecha).length !== 0 ? (
                 <div className="flex flex-col justify-between items-start gap-4 w-full">
@@ -160,6 +173,7 @@ const Crear = () => {
               )}
             </div>
 
+            {/* completado field */}
             <div className="flex justify-between items-center gap-4 w-full">
               <label htmlFor="completado" className="capitalize text-xl">
                 completado
@@ -173,6 +187,7 @@ const Crear = () => {
               />
             </div>
 
+            {/* descripcion field */}
             <div>
               {Object.keys(errorDescripcion).length !== 0 ? (
                 <div className="flex flex-col justify-between items-start gap-4 w-full">
@@ -216,6 +231,7 @@ const Crear = () => {
               )}
             </div>
 
+            {/*comentarios field */}
             <div>
               {Object.keys(errorComentarios).length !== 0 ? (
                 <div className="flex flex-col justify-between items-start gap-4 w-full">
