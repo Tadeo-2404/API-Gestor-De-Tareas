@@ -40,8 +40,25 @@ const ContextTareas = ({ children }) => {
     localStorage.removeItem('responsable');
   }
 
+  const deleteItem = async (tarea) => {
+    const validate = confirm(`Desear borrar la tarea: ${tarea.titulo}`);
+
+    if(!validate) {
+      return;
+    }
+
+    try {
+      const url = `http://localhost:3000/api/tareas/${tarea.id}`;
+      const petiicion = await axios.delete(url, {data: {responsable: auth}});
+      forceUpdate();
+      console.log(petiicion);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <Context.Provider value={{ auth, setAuth, loggedIn, setLoggedIn, tareas, signOut}}>
+    <Context.Provider value={{ auth, setAuth, loggedIn, setLoggedIn, tareas, signOut, deleteItem}}>
       {children}
     </Context.Provider>
   );

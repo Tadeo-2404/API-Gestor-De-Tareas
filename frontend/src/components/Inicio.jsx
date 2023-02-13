@@ -3,7 +3,12 @@ import { Context } from "../context/ContextProvider";
 import { RiDeleteBin6Line, RiEditLine } from "react-icons/ri";
 
 const Inicio = () => {
-  const { tareas, auth } = useContext(Context);
+  const { tareas, auth, deleteItem } = useContext(Context);
+
+  const handleClick = (e, data) => {
+    deleteItem(data);
+  }
+
   return (
     <>
       {tareas.length > 0 ? (
@@ -38,6 +43,8 @@ const Inicio = () => {
                   <button
                     type="submit"
                     className="bg-red-500 flex items-center justify-around p-2 uppercase"
+                    value={tarea.id}
+                    onClick={((e) => handleClick(e, tarea))}
                   >
                     <p>eliminar</p>
                     <RiDeleteBin6Line className="text-2xl" />
