@@ -30,7 +30,7 @@ const IniciarSesion = () => {
     try {
       await localStorage.setItem("responsable", usuario);
       setLoggedIn(true);
-      setAuth({responsable: usuario});
+      setAuth(usuario);
       navigate('/api/tareas');
     } catch (error) {
       setError(error);

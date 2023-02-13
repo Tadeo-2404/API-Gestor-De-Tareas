@@ -2,12 +2,13 @@ import Tarea from '../models/Tarea.js'; //importing Model Tarea
 
 //get all tasks
 const obtenerTareas = async (req, res) => {
-    const { responsable } = req.body; //get user whom requesting
+    const { responsable } = req.query; //get user whom requesting
+    console.log(responsable);
 
     //validation responsable not found
     if (!responsable) {
         const error = new Error("responsanble missing");
-        res.status(400).json({ msg: error.message }); ç
+        res.status(400).json({ msg: error.message }); 
         return;
     }
 
@@ -58,7 +59,7 @@ const agregarTarea = async (req, res) => {
 //getting a task
 const obtenerTarea = async (req, res) => {
     const { id } = req.params; //read item id from url
-    const { responsable } = req.body; //get user whom requesting
+    const { responsable } = req.query; //get user whom requesting
 
     //validation responsable not found
     if (!responsable) {
