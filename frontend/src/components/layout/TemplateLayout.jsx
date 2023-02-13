@@ -9,7 +9,7 @@ const TemplateLayout = () => {
   return (
     <div>
         {loggedIn ? <NavBar /> : <NavBarAuth />}
-        <div className='p-10 h-screen flex flex-col justify-center items-center'>
+        <div className='m-10 flex flex-col justify-center items-center'>
          <Outlet />
         </div>
     </div>
