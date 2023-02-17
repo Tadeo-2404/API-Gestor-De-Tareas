@@ -1,6 +1,22 @@
 # API-Gestor-De-Tareas
 Gestor de tareas empleando Node.JS, MySQL, Express.JS, Sequelize, React.JS, Tailwind-CSS, Axios
 
+## Overview
+### Inciar Sesion
+<img width="960" alt="image" src="https://user-images.githubusercontent.com/90989742/219768187-7802883d-8f76-4118-b711-23e3fe546b1a.png">
+
+### Perfil
+<p>Si no tiene tareas</p>
+<img width="960" alt="image" src="https://user-images.githubusercontent.com/90989742/219768703-812539ac-f6ef-4eb5-933f-acee4e98df8c.png">
+<p>Si tiene tareas</p>
+<img width="940" alt="image" src="https://user-images.githubusercontent.com/90989742/219769174-7e76a444-2509-404c-b1d4-2f9b2d0deddd.png">
+<p>Agregar Tarea</p>
+<img width="172" alt="image" src="https://user-images.githubusercontent.com/90989742/219769554-92c47c4a-5c98-4e79-af4a-3615fd0e6cb9.png">
+<p>Editar Tarea</p>
+<img width="144" alt="image" src="https://user-images.githubusercontent.com/90989742/219769757-80d29e7b-6222-4684-b1c9-4eca6289a13e.png">
+<p>Eliminar Tarea</p>
+<img width="335" alt="image" src="https://user-images.githubusercontent.com/90989742/219770040-67a63497-914b-4111-a59a-788210ca99b4.png">
+
 ## Run the frontend
 <p>Access frontend folder</p>
 
